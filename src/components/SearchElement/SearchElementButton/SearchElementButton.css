@@ -1,0 +1,23 @@
+.header__search-element__button {
+	background-color: rgb(53, 52, 52);
+	border-radius: 0 8px 8px 0;
+	width: 2.2em;
+	height: 100%;
+	border: none;
+	outline: none;
+	position: relative;
+}
+
+.header__search-element__button:focus::after {
+	border-radius: 0 8px 8px 0;
+
+	border: 4px solid rgba(4, 37, 36, 0.501);
+	box-shadow: 0, 1, 1 rgba(30, 199, 190, 0.301);
+
+	position: absolute;
+	content: '';
+	top: -4px;
+	bottom: -4px;
+	right: -4px;
+	left: -4px;
+}

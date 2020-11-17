@@ -1,0 +1,16 @@
+.header__info-bar-tile {
+	padding: 0 16px;
+	flex: 0.4;
+}
+
+.header__info-bar-tile__title {
+	font-size: 0.7em;
+	font-weight: 500;
+	font-variant: small-caps;
+	color: #888;
+}
+
+.header__info-bar-tile__content {
+	font-size: 1.1em;
+	font-weight: 700;
+}

@@ -1,0 +1,7 @@
+.header__search_element__input {
+	border: none;
+	padding: 16px 20px;
+	border-radius: inherit;
+	background-color: aqua;
+	border-radius: 8px 0 0 8px;
+}
