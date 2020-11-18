@@ -1,6 +1,9 @@
 :root {
 	--font-size: 18px;
-	--font-family: 'Rubik', sans-serif;
+	--font-family: 'Rubik';
+
+	--color-dark: hsl(0, 0%, 17%);
+	--color-gray: hsl(0, 0%, 59%);
 }
 
 html,
@@ -9,7 +12,8 @@ body {
 }
 
 body,
-input {
+input,
+button {
 	font-family: var(--font-family);
 	font-size: var(--font-size);
 }
@@ -20,4 +24,23 @@ input {
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+::-webkit-scrollbar {
+	width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(100, 100, 100);
 }

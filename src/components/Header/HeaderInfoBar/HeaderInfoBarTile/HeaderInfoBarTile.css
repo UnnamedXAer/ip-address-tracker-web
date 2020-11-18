@@ -1,16 +1,29 @@
 .header__info-bar-tile {
-	padding: 0 16px;
+	padding: 0 32px;
 	flex: 0.4;
 }
 
 .header__info-bar-tile__title {
-	font-size: 0.7em;
+	margin-block-start: 0;
+	margin-block-end: 0.6em;
+	font-size: 1em;
 	font-weight: 500;
 	font-variant: small-caps;
-	color: #888;
+	color: var(--color-gray);
+	letter-spacing: 0.1em;
 }
 
 .header__info-bar-tile__content {
-	font-size: 1.1em;
-	font-weight: 700;
+	margin-block-start: 0.6em;
+	margin-block-end: 0;
+	color: var(--color-dark);
+	font-size: 1.5em;
+	font-weight: 500;
+	height: 65px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-color: var(--color-gray);
+	scrollbar-width: 4px;
 }
+
+

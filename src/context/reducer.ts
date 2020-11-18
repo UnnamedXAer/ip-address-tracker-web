@@ -2,15 +2,10 @@ import { LocationAction } from '../types/reducer';
 import { LocationState } from '../types/state';
 
 export const initialState: LocationState = {
-	location: {
-		ipAddress: '192.212.174.101',
-		location: 'Brooklyn, NY 10001',
-		timezone: 'UTC -05:00',
-		ISP: 'SpaceX Starlink'
-	},
+	location: null,
 	error: null,
 	loading: false,
-	lastFetchDate: new Date()
+	lastFetchDate: null
 };
 
 export const reducer = (state: LocationState, action: LocationAction): LocationState => {

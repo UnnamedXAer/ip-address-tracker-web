@@ -2,6 +2,7 @@
 	border: none;
 	padding: 16px 20px;
 	border-radius: inherit;
-	background-color: aqua;
-	border-radius: 8px 0 0 8px;
+	border-radius: 16px 0 0 16px;
+	flex: 1;
+	outline: none;
 }

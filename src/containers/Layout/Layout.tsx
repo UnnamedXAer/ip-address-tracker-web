@@ -1,10 +1,13 @@
 import React from 'react';
+import './Layout.css';
 import Header from '../../components/Header/Header';
+import Map from '../Map/Map';
 
 function Layout() {
 	return (
-		<div>
+		<div className="layout">
 			<Header />
+			<Map />
 		</div>
 	);
 }
