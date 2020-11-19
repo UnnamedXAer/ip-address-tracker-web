@@ -32,6 +32,11 @@ export const reducer = (state: LocationState, action: LocationAction): LocationS
 				lastFetchDate: new Date(),
 				location: null
 			};
+		case 'SET_ERROR':
+			return {
+				...state,
+				error: action.payload,
+			};
 		default:
 			return state;
 	}

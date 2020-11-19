@@ -7,7 +7,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--bg-backdrop);
+	background-color: rgba(31.75, 39.01316, 43.25, 0.3);
 }
 
 .backdrop-entering {
