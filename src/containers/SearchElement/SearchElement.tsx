@@ -50,7 +50,7 @@ function SearchElement() {
 
 	useEffect(() => {
 		// console.log('locationState.location', locationState.location);
-		if (process.env.NODE_ENV === 'development') {
+		if (process.env.NODE_ENV === 'production') {
 			if (locationState.location === null && locationState.lastFetchDate === null) {
 				console.log('about to execute [loadLocation]');
 				loadLocation();
