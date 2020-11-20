@@ -8,7 +8,7 @@ export const fetchIPAddressLocation = async (
 ): Promise<LocationInfo> => {
 	const _address = address ? address.trim() : '';
 	let url = process.env.REACT_APP_API_URL;
-	let searchValue = '';
+	let searchValue = encodeURIComponent(_address);
 	if (_address) {
 		const savedLocation = localStorage.getItem(_address);
 
@@ -29,19 +29,17 @@ export const fetchIPAddressLocation = async (
 				_address
 			)
 		) {
-			searchValue = _address;
 			url += '&ipAddress=';
 		} else if (
 			/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
 				_address
 			)
 		) {
-			searchValue = _address;
 			url += '&email=';
 		} else {
 			url += '&domain=';
 		}
-		url += encodeURIComponent(searchValue);
+		url += searchValue;
 	}
 
 	try {
