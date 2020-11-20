@@ -13,6 +13,7 @@ const SearchElementInput: React.FC<Props> = ({ value, onChange }) => {
 			type="text"
 			value={value}
 			onChange={onChange}
+			placeholder="IP Address"
 		/>
 	);
 };

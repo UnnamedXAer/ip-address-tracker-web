@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import './SearchElement.css';
 import SearchElementButton from '../../components/SearchElement/SearchElementButton/SearchElementButton';
 import SearchElementInput from '../../components/SearchElement/SearchElementInput/SearchElementInput';
 import Dialog, { DialogData } from '../../components/UI/Dialog/Dialog';
@@ -6,7 +7,7 @@ import { LocationContext } from '../../context/locationContext';
 import { StateError } from '../../types/state';
 import { fetchIPAddressLocation } from '../../utils/api';
 import { isValidIPOrDomainAddress } from '../../utils/validation';
-import './SearchElement.css';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 function SearchElement() {
 	const [IPValue, setIPValue] = useState('');
@@ -21,7 +22,6 @@ function SearchElement() {
 
 	useEffect(() => {
 		if (locationState.error) {
-			console.log('locationState.error', locationState.error);
 			setDialogData({
 				open: true,
 				title: 'Error',
@@ -38,7 +38,6 @@ function SearchElement() {
 		async (address?: string) => {
 			dispatch({ type: 'FETCH_LOCATION_START', payload: undefined });
 			try {
-				console.log('about to throw');
 				const data = await fetchIPAddressLocation(address);
 				dispatch({ type: 'FETCH_LOCATION_SUCCESS', payload: data });
 			} catch (err) {
@@ -49,10 +48,8 @@ function SearchElement() {
 	);
 
 	useEffect(() => {
-		// console.log('locationState.location', locationState.location);
 		if (process.env.NODE_ENV === 'production') {
 			if (locationState.location === null && locationState.lastFetchDate === null) {
-				console.log('about to execute [loadLocation]');
 				loadLocation();
 			}
 		}
@@ -61,7 +58,7 @@ function SearchElement() {
 	const submitHandler = (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		if (!isValidIPOrDomainAddress(IPValue)) {
-			return setError('Not an IP Address.');
+			return setError('Enter IP address.');
 		}
 
 		setError(null);
@@ -83,7 +80,8 @@ function SearchElement() {
 					style={{
 						color: 'tomato',
 						background: '#fff',
-						opacity: 0.2,
+						opacity: 0.7,
+						borderRadius: 16,
 						minWidth: 500,
 						textAlign: 'center',
 						fontWeight: 500,
@@ -94,6 +92,7 @@ function SearchElement() {
 				</p>
 			)}
 			<Dialog data={dialogData} />
+			<Spinner open={locationState.loading} />
 		</>
 	);
 }

@@ -6,20 +6,13 @@ import { Transition } from 'react-transition-group';
 const backdropRoot = document.getElementById('backdrop-root') as HTMLElement;
 
 interface Props {
-	onClose: () => void;
+	onClose?: () => void;
 	open: boolean;
-	// onExited: () => void;
 	timeout?: number;
 	zIndex?: number;
 }
 
-const Backdrop: React.FC<Props> = ({
-	onClose,
-	open,
-	// onExited,
-	timeout = 200,
-	zIndex = 1000
-}) => {
+const Backdrop: React.FC<Props> = ({ onClose, open, timeout = 200, zIndex = 1000 }) => {
 	const backdropRef = useRef(null);
 
 	return ReactDOM.createPortal(
@@ -28,7 +21,6 @@ const Backdrop: React.FC<Props> = ({
 			in={open}
 			mountOnEnter
 			unmountOnExit
-			// onExited={onExited}
 			appear={true}
 			nodeRef={backdropRef}
 		>
