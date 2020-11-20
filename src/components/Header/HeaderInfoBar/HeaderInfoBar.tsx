@@ -10,7 +10,7 @@ const getLocationName = (loc?: LocationInfo['location']) =>
 
 function HeaderInfoBar() {
 	const {
-		state: { location }
+		state: { location: locInfo }
 	} = useContext(LocationContext);
 
 	return (
@@ -18,20 +18,20 @@ function HeaderInfoBar() {
 			<div className="header__info-bar">
 				<InfoBarTile
 					title="ip address"
-					content={location ? location.ipAddress : '-'}
+					content={locInfo ? locInfo.ipAddress : '-'}
 				/>
 				<VerticalSeparator height={'75px'} style={{ alignSelf: 'center' }} />
 				<InfoBarTile
 					title="location"
-					content={getLocationName(location?.location)}
+					content={getLocationName(locInfo?.location)}
 				/>
 				<VerticalSeparator height={'75px'} style={{ alignSelf: 'center' }} />
 				<InfoBarTile
 					title="timezone"
-					content={location ? location.timezone : '-'}
+					content={locInfo ? locInfo.location.timezone : '-'}
 				/>
 				<VerticalSeparator height={'75px'} style={{ alignSelf: 'center' }} />
-				<InfoBarTile title="isp" content={location ? location.ISP : '-'} />
+				<InfoBarTile title="isp" content={locInfo ? locInfo.ISP : '-'} />
 			</div>
 		</div>
 	);

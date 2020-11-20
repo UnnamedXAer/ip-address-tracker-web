@@ -48,13 +48,15 @@ function SearchElement() {
 		[dispatch]
 	);
 
-	// useEffect(() => {
-	// 	// console.log('locationState.location', locationState.location);
-	// 	if (locationState.location === null && locationState.lastFetchDate === null) {
-	// 		console.log('about to execute [loadLocation]');
-	// 		loadLocation();
-	// 	}
-	// }, [loadLocation, locationState.lastFetchDate, locationState.location]);
+	useEffect(() => {
+		// console.log('locationState.location', locationState.location);
+		if (process.env.NODE_ENV === 'development') {
+			if (locationState.location === null && locationState.lastFetchDate === null) {
+				console.log('about to execute [loadLocation]');
+				loadLocation();
+			}
+		}
+	}, [loadLocation, locationState.lastFetchDate, locationState.location]);
 
 	const submitHandler = (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();

@@ -1,33 +1,38 @@
 import React, { useContext, useEffect } from 'react';
+import './MapMarker.css';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import { LocationContext } from '../../../context/locationContext';
 
 function MapMarker() {
 	const {
-		state: { location }
+		state: { location: locInfo }
 	} = useContext(LocationContext);
 
 	const map = useMapEvents({
-		// click: (ev) => {
-		// 	map.locate();
-		// },
-		// locationfound: (ev) => {
-		// 	setPos(ev.latlng);
-		// 	map.flyTo(ev.latlng, map.getZoom());
-		// }
+		click: (ev) => {
+			map.setView(ev.latlng, map.getZoom(), {
+				animate: true
+			});
+		}
 	});
 
 	useEffect(() => {
-		if (location?.latLng) {
-			map.flyTo(location.latLng, map.getZoom());
+		if (locInfo?.location.latLng) {
+			map.flyTo(locInfo?.location.latLng, map.getZoom());
 		}
-	}, [location, map]);
+	}, [locInfo, map]);
 
-	return location === null ? null : (
-		<Marker position={location.latLng}>
-			<Popup>
-				{location.location.country}, {location.location.city}{' '}
-				{location.location.postalCode}
+	return locInfo === null ? null : (
+		<Marker position={locInfo?.location.latLng}>
+			<Popup className="map-marker__popup">
+				<p>
+					{locInfo.location.country},{' '}
+					{locInfo.location.region && locInfo.location.region}
+					<br />
+					{locInfo.location.city}
+					<br />
+					{locInfo.location.postalCode}
+				</p>
 			</Popup>
 		</Marker>
 	);

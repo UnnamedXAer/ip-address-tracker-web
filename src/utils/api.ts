@@ -1,55 +1,84 @@
-import { LocationInfo } from '../types/state';
+import { LocationInfo, LocationInfoError } from '../types/state';
 import { mapDataToLocation } from './mapAPIDataToModel';
+
+const defaultErrorMsg = 'Unable to find location for your input.';
 
 export const fetchIPAddressLocation = async (
 	address: string | undefined
 ): Promise<LocationInfo> => {
-	const _address = address ? address.trim() : null;
+	const _address = address ? address.trim() : '';
 	let url = process.env.REACT_APP_API_URL;
-	let ipAddress = '';
-	let domain = '';
-	let email = '';
+	let searchValue = '';
 	if (_address) {
-		const saveLocation = localStorage.getItem(_address);
-		if (saveLocation) {
-			console.log('saveLocation', saveLocation);
-			return JSON.parse(saveLocation) as LocationInfo;
+		const savedLocation = localStorage.getItem(_address);
+
+		if (savedLocation) {
+			const savedLocationObj = JSON.parse(savedLocation) as
+				| LocationInfo
+				| LocationInfoError;
+
+			if ('isError' in savedLocationObj) {
+				throw new Error(savedLocationObj.message);
+			}
+
+			return savedLocationObj;
 		}
-		if (_address.includes('http') || _address.includes('www')) {
-			domain = encodeURIComponent(_address);
-			url += '&domain=' + domain;
-		} else if (/.+@.+\..+/.test(_address)) {
-			email = encodeURIComponent(_address);
-			url += '&email=' + email;
+
+		if (
+			/((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/.test(
+				_address
+			)
+		) {
+			searchValue = _address;
+			url += '&ipAddress=';
+		} else if (
+			/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+				_address
+			)
+		) {
+			searchValue = _address;
+			url += '&email=';
 		} else {
-			// TODO: check if ip v4/v6 otherwise throw error
-			ipAddress = _address;
-			url += '&ipAddress=' + ipAddress;
+			url += '&domain=';
 		}
+		url += encodeURIComponent(searchValue);
 	}
 
 	try {
 		const response = await fetch(url);
-		if (response.ok) {
-			const data = await response.json();
-			const locInfo: LocationInfo = mapDataToLocation(data);
+		const data = await response.json();
+		if (data.ip || (data.results && data.results[0])) {
+			const _data = data.ip ? data : data.results[0];
+			if (!_data.ip) {
+				saveToStorage(_address, {
+					code: 999,
+					isError: true,
+					message: defaultErrorMsg
+				});
+				throw new Error(defaultErrorMsg);
+			}
+			const locInfo: LocationInfo = mapDataToLocation(_address, searchValue, _data);
+
+			if (searchValue) {
+				saveToStorage(searchValue!, locInfo);
+			}
 			if (locInfo.ipAddress) {
-				saveToStorage(locInfo.ipAddress, locInfo);
-				if (locInfo.ipAddress !== ipAddress) {
-					saveToStorage(ipAddress, locInfo);
+				if (!searchValue || locInfo.ipAddress !== searchValue) {
+					saveToStorage(locInfo.ipAddress, locInfo);
 				}
-			} else if (ipAddress) {
-				saveToStorage(ipAddress, locInfo);
 			}
-			if (domain || email) {
-				saveToStorage(_address!, locInfo);
-			}
-			if (data.as && data.as.domain) {
-				saveToStorage(data.as.domain, locInfo);
+			if (_data.as && _data.as.domain && _data.as.domain !== _address) {
+				saveToStorage(_data.as.domain, locInfo);
 			}
 			return locInfo;
 		}
-		throw new Error('Response is not Ok :(.');
+		const errorData: LocationInfoError = {
+			message: data.messages || defaultErrorMsg,
+			code: data.code || response.status || 999,
+			isError: true
+		};
+		saveToStorage(_address, errorData);
+		throw new Error(errorData.message);
 	} catch (err) {
 		console.log('err', err);
 		throw err;

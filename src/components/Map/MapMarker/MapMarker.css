@@ -1,0 +1,7 @@
+.map-marker__popup {
+	z-index: 10010;
+}
+
+.map-marker__popup p {
+	font-size: 16px;
+}

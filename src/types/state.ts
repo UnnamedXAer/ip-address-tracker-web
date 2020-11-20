@@ -3,19 +3,27 @@ import { LatLngLiteral } from 'leaflet';
 export type StateError = string | null;
 
 export type LocationInfo = {
+	search: {
+		userInput: string;
+		searchValue: string;
+	};
 	ipAddress: string;
+	domain?: string;
+	ISP: string;
 	location: {
 		country: string;
 		region: string;
 		city: string;
-		lat: number;
-		lng: number;
+		latLng: LatLngLiteral;
 		postalCode: string;
 		timezone: string;
 	};
-	timezone: string;
-	ISP: string;
-	latLng: LatLngLiteral;
+};
+
+export type LocationInfoError = {
+	code: number;
+	message: string;
+	isError: true;
 };
 
 export type LocationState = {
