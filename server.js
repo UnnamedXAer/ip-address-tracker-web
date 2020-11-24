@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.post('/ipify', function (req, res) {
 	const params = req.body ? req.body.searchParams : '';
-	console.log('[POST] /ipify - body:',params);
+	console.log('[POST] /ipify - body:', params);
 
 	request
 		.get(process.env.IP_API_URL + params, (ipifyRes) => {
@@ -24,14 +24,19 @@ app.post('/ipify', function (req, res) {
 				data += incData;
 			});
 			ipifyRes.on('end', function () {
+				console.log(data);
 				res.send(JSON.parse(data));
 			});
 			ipifyRes.on('error', (err) => {
-				res.status(500).send(err);
+				res.status(500).send(
+					process.env.NODE_ENV === 'production' ? 'Unable to fetch data.' : err
+				);
 			});
 		})
 		.once('error', (err) => {
-			res.status(500).send(err);
+			res.status(500).send(
+				process.env.NODE_ENV === 'production' ? 'Unable to fetch data.' : err
+			);
 		});
 });
 

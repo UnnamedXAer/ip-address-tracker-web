@@ -7,7 +7,6 @@ export const fetchIPAddressLocation = async (
 	address: string | undefined
 ): Promise<LocationInfo> => {
 	const _address = address ? address.trim() : '';
-	let url = process.env.REACT_APP_API_URL;
 	let searchParams = '';
 	let searchValue = encodeURIComponent(_address);
 	if (_address) {
@@ -55,7 +54,7 @@ export const fetchIPAddressLocation = async (
 			body: body
 		};
 
-		const response = await fetch(url, reqInit);
+		const response = await fetch('/ipify', reqInit);
 		const data = await response.json();
 		if (data.ip || (data.results && data.results[0])) {
 			const _data = data.ip ? data : data.results[0];
