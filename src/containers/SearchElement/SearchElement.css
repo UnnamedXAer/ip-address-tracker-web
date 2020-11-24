@@ -6,3 +6,11 @@
 	align-items: center;
 	border-radius: 16px;
 }
+
+@media only screen and (max-width: 1440px) {
+	.header__search-element {
+		min-width: unset;
+		width: 90%;
+		max-width: 500px;
+	}
+}

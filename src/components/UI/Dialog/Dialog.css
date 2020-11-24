@@ -2,7 +2,7 @@
 	min-width: 300px;
 	max-height: 90vh;
 	max-width: 90vw;
-	z-index: 1010;
+	z-index: 1020;
 	padding: 16px;
 	border: 1px solid rgb(36, 45, 50);
 	background: rgb(251, 251, 255);
@@ -12,10 +12,28 @@
 	transform-origin: right top;
 }
 
+.dialog-title {
+	font-size: 1.1;
+	font-weight: 500;
+}
+
+.dialog-title,
+.dialog-content {
+	padding-bottom: 4px;
+	margin-bottom: 4px;
+	border-bottom: 1px solid rgba(204, 204, 204, 0.7);
+}
+
 .dialog-actions {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+}
+
+.dialog-actions button {
+	border: none;
+	background-color: inherit;
+	color: royalblue;
 }
 
 .dialog-entering {
@@ -72,8 +90,20 @@
 	background-color: transparent;
 }
 
-@media screen and (max-width: 340px) {
-	.dialog input {
-		max-width: 50vw !important;
+@media screen and (max-width: 375px) {
+	.dialog {
+		min-width: 95vw;
+		max-height: 90vh;
+	}
+
+	.dialog-content,
+	.dialog-title {
+		word-wrap: break-word;
+	}
+
+	.dialog-content {
+		max-height: calc(70vh - 32px - 24px);
+		overflow-x: hidden;
+		overflow-y: auto;
 	}
 }

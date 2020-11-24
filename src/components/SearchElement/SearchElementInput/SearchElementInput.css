@@ -5,4 +5,11 @@
 	border-radius: 16px 0 0 16px;
 	flex: 1;
 	outline: none;
+	width: calc(100% -3em);
+}
+
+@media only screen and (max-width: 375px) {
+	.header__search_element__input {
+		width: calc(100% - 2em);
+	}
 }

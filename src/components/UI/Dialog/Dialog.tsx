@@ -40,7 +40,6 @@ const Dialog: React.FC<Props> = ({ data }) => {
 					in={open}
 					mountOnEnter
 					unmountOnExit
-					// onExited={onExited}
 					appear
 					nodeRef={ref}
 					onEntering={enteringHandler}
@@ -59,7 +58,7 @@ const Dialog: React.FC<Props> = ({ data }) => {
 									<div className="dialog-content">{content}</div>
 									<Divider />
 									<div className="dialog-actions">
-										<button onClick={onClose}>OK</button>
+										<button onClick={onClose}>Dismiss</button>
 									</div>
 								</div>
 							</div>

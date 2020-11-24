@@ -12,7 +12,7 @@ interface Props {
 	zIndex?: number;
 }
 
-const Backdrop: React.FC<Props> = ({ onClose, open, timeout = 200, zIndex = 1000 }) => {
+const Backdrop: React.FC<Props> = ({ onClose, open, timeout = 200, zIndex = 1015 }) => {
 	const backdropRef = useRef(null);
 
 	return ReactDOM.createPortal(

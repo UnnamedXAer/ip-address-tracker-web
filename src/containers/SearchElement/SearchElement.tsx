@@ -4,14 +4,12 @@ import SearchElementButton from '../../components/SearchElement/SearchElementBut
 import SearchElementInput from '../../components/SearchElement/SearchElementInput/SearchElementInput';
 import Dialog, { DialogData } from '../../components/UI/Dialog/Dialog';
 import { LocationContext } from '../../context/locationContext';
-import { StateError } from '../../types/state';
 import { fetchIPAddressLocation } from '../../utils/api';
 import { isValidIPOrDomainAddress } from '../../utils/validation';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 function SearchElement() {
 	const [IPValue, setIPValue] = useState('');
-	const [error, setError] = useState<StateError>(null);
 	const [dialogData, setDialogData] = useState<DialogData>({
 		content: null,
 		onClose: () => {},
@@ -58,10 +56,9 @@ function SearchElement() {
 	const submitHandler = (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		if (!isValidIPOrDomainAddress(IPValue)) {
-			return setError('Enter IP address.');
+			return;
 		}
 
-		setError(null);
 		loadLocation(IPValue);
 	};
 
@@ -75,22 +72,6 @@ function SearchElement() {
 				<SearchElementInput value={IPValue} onChange={IPChangeHandler} />
 				<SearchElementButton />
 			</form>
-			{error && (
-				<p
-					style={{
-						color: 'tomato',
-						background: '#fff',
-						opacity: 0.7,
-						borderRadius: 16,
-						minWidth: 500,
-						textAlign: 'center',
-						fontWeight: 500,
-						marginBlockStart: '0.1em'
-					}}
-				>
-					{error}
-				</p>
-			)}
 			<Dialog data={dialogData} />
 			<Spinner open={locationState.loading} />
 		</>

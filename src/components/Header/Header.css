@@ -16,3 +16,26 @@
 	margin-block-end: 24px;
 	color: white;
 }
+
+@media only screen and (max-width: 1440px) {
+	.header {
+		height: 200px;
+	}
+
+	.header__app-title {
+		margin-block-start: 14px;
+		margin-block-end: 14px;
+		font-size: 1.3em;
+	}
+}
+
+@media only screen and (max-width: 375px) {
+	.header {
+		height: 180px;
+	}
+	.header__app-title {
+		margin-block-start: 14px;
+		margin-block-end: 14px;
+		font-size: 1.3em;
+	}
+}

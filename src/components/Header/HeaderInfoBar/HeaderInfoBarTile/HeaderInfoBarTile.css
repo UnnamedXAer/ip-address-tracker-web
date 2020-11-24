@@ -1,6 +1,7 @@
 .header__info-bar-tile {
 	padding: 0 32px;
 	flex: 0.4;
+	position: relative;
 }
 
 .header__info-bar-tile__title {
@@ -26,4 +27,13 @@
 	scrollbar-width: 4px;
 }
 
+@media only screen and (max-width: 375px) {
+	.header__info-bar-tile {
+		flex: unset;
+	}
 
+	.header__info-bar-tile__content {
+		height: unset;
+		max-height: 65px;
+	}
+}
